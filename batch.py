@@ -1,63 +1,40 @@
 import os
 import pandas as pd
 
-root_dir = "/home/shu/Projects/ss_curve/Clean_Data/"
+base_path = "/home/shu/projects/stress-strain-prediction/Clean_Data/"
 
-all_data = []
+all_tensile = []
 
-def normalize_columns(df):
-    cols = [c.lower().strip() for c in df.columns]
-    df.columns = cols
-
-    # stress
-    stress_candidates = [c for c in cols if "stress" in c or "sigma" in c]
-    # strain
-    strain_candidates = [c for c in cols if "strain" in c or "e_" in c]
-
-    if not stress_candidates or not strain_candidates:
-        raise ValueError(f"No stress/strain columns found in {df.columns}")
-
-    stress_col = stress_candidates[0]
-    strain_col = strain_candidates[0]
-
-    out = pd.DataFrame({
-        "stress": df[stress_col],
-        "strain": df[strain_col]
-    })
-
-    return out
-
-for subdir, _, files in os.walk(root_dir):
-    for file in files:
-        if not file.endswith(".csv") or file == "db_tag_clean_data_map.csv":
-            continue
-
-        file_path = os.path.join(subdir, file)
-        try:
-            df = pd.read_csv(file_path)
-        except Exception:
+for root, dirs, files in os.walk(base_path):
+    for f in files:
+        if f.endswith(".csv") and "tensile" in f.lower():
+            file_path = os.path.join(root, f)
             try:
-                df = pd.read_csv(file_path, delimiter=";")
-            except Exception:
-                try:
-                    df = pd.read_csv(file_path, delimiter="\t")
-                except Exception as e:
-                    print(f"Skipping {file_path}: {e}")
+                df = pd.read_csv(file_path)
+                
+                # only keep Sigma_true and e_true if they exist
+                cols_to_keep = [c for c in ["Sigma_true", "e_true"] if c in df.columns]
+                if not cols_to_keep:
+                    print(f"Skipped {file_path}: no Sigma_true/e_true found")
                     continue
+                
+                df = df[cols_to_keep].copy()
+                
+                # add metadata
+                df["file_name"] = f
+                df["steel_grade"] = os.path.basename(os.path.dirname(file_path))
+                df["full_path"] = file_path
+                
+                all_tensile.append(df)
+            except Exception as e:
+                print(f"Error reading {file_path}: {e}")
 
-        try:
-            df_norm = normalize_columns(df)
-            grade = os.path.basename(subdir)
-            df_norm["steel_grade"] = grade
-            df_norm["file_name"] = file
-            all_data.append(df_norm)
-        except Exception as e:
-            print(f"Skipping {file_path}: {e}")
-
-if all_data:
-    master_df = pd.concat(all_data, ignore_index=True)
-    out_path = os.path.join(root_dir, "all_steel_curves.csv")
-    master_df.to_csv(out_path, index=False)
-    print(f"Saved {len(master_df)} rows to {out_path}")
+# merge all into one dataframe
+if all_tensile:
+    df_tensile = pd.concat(all_tensile, ignore_index=True)
+    out_path = os.path.join(base_path, "tensile_curves_sigma_e.csv")
+    df_tensile.to_csv(out_path, index=False)
+    print(f"Saved clean tensile dataset to {out_path}")
+    print(df_tensile.head())
 else:
-    print("No usable CSVs found.")
+    print("No tensile data found.")
