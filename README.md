@@ -1,7 +1,7 @@
 # Stress–Strain Curve Prediction in Ductile Materials
 
 ## Project Overview
-Goal: Explore machine learning approaches to predict stress–strain behavior of various ductile alloys.
+Goal: Explore machine learning approaches to predict stress–strain behavior of various ductile 
 Data: Engineering stress–strain curves for Al 6061-T651 from 9 lots, multiple temperatures.  
 
 ## Versions / Milestones

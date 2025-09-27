@@ -25,7 +25,7 @@ import re
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error,r2_score
 
 import torch
 import torch.nn as nn
@@ -333,6 +333,29 @@ for ax, idx in zip(axes, idxs):
 axes[-1].set_xlabel("Strain")
 plt.suptitle("Validation: Actual vs Predicted vs Baselines", y=1.02)
 plt.show()
+# ---------- Verifications ---------
+from sklearn.metrics import r2_score, mean_squared_error
+import numpy as np
+
+# Already have: pred_Y (val predictions), Y_val_orig (val truths)
+
+# Mean squared error
+mse_model = mean_squared_error(Y_val_orig, pred_Y)
+mse_global = mean_squared_error(Y_val_orig, np.tile(global_mean_curve, (Y_val_orig.shape[0], 1)))
+
+# R² score (accuracy-like metric)
+r2 = r2_score(Y_val_orig, pred_Y)
+
+# Normalized RMSE (percentage of stress range)
+rmse = np.sqrt(mse_model)
+stress_range = Y_val_orig.max() - Y_val_orig.min()
+nrmse = rmse / stress_range * 100
+
+print(f"Validation metrics:")
+print(f"  MSE (Model): {mse_model:.3f}")
+print(f"  MSE (Global mean): {mse_global:.3f}")
+print(f"  R² Score: {r2:.4f} (1.0 = perfect)")
+print(f"  Normalized RMSE: {nrmse:.2f}% of stress range")
 
 # ---------- Quick tips ----------
 print("\nNotes:")
