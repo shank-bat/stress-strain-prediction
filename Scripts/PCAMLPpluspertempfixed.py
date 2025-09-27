@@ -21,7 +21,7 @@ from torch.optim import AdamW
 # Paths & params
 # -----------------------------
 CSV_PATH = "/home/shu/projects/stress-strain-prediction/OutputData/aluminium_6061_curves.csv"
-OUT_DIR = "/home/shu/projects/stress-strain-prediction/models_per_temp"
+OUT_DIR = "/home/shu/projects/stress-strain-prediction/models_per_temp_fixed"
 os.makedirs(OUT_DIR, exist_ok=True)
 
 SEED = 42
