@@ -1,48 +1,38 @@
-import pandas as pd
 import shutil
 from pathlib import Path
 
-# Paths
-base_dir = Path("Clean_Data")        # folder where you extracted the dataset
-map_file = base_dir / "db_tag_clean_data_map.csv"
-sorted_dir = Path("Sorted_Clean_Data")
-sorted_dir.mkdir(exist_ok=True)
+# Point to your Clean_Data folder
+base_dir = Path("Clean_Data")   # adjust if needed
 
-# Load the mapping
-db_map = pd.read_csv(map_file, header=None)
+# Where to save
+out_root = Path("Selected_Tensile")
+if out_root.exists():
+    shutil.rmtree(out_root)
+out_root.mkdir(parents=True, exist_ok=True)
 
-# Define categories with keywords
-categories = {
-    "flange": ["flange"],
-    "web": ["web"],
-    "const": ["const"],
-    "random": ["random"],
-    "inc": ["inc"],
-    "tensile": []  # default bucket for everything else
-}
+# Keywords to exclude (non-tensile)
+exclude_keywords = ["flange", "web", "const", "random", "inc"]
 
-# Make category folders
-for cat in categories:
-    (sorted_dir / cat).mkdir(exist_ok=True)
+def is_lp1(path_str: str):
+    return "lp1" in path_str
 
-# Classify function
-def classify_file(path: str):
-    for cat, keys in categories.items():
-        for key in keys:
-            if key.lower() in path.lower():
-                return cat
-    return "tensile"
+# Collect all csv/pdf files
+all_files = list(base_dir.rglob("*"))
+selected = []
 
-# Sort and copy files
-for _, row in db_map.iterrows():
-    file_rel = row[1].lstrip("./")          # relative path in db_map
-    file_abs = base_dir.parent / file_rel   # absolute path
-    if file_abs.exists():
-        cat = classify_file(file_rel)
-        dest = sorted_dir / cat / Path(file_rel).name
-        shutil.copy(file_abs, dest)
+for p in all_files:
+    if p.suffix.lower() not in [".csv", ".pdf"]:
+        continue
+    pstr = str(p).lower()
+    if any(ex in pstr for ex in exclude_keywords):
+        continue
+    # Accept if file is LP1 OR contains tensile OR plates OR base metal
+    if is_lp1(pstr) or "tensile" in pstr or "plate" in pstr or "base metal" in pstr:
+        selected.append(p)
 
-# Report counts
-for cat in categories:
-    count = len(list((sorted_dir / cat).glob("*.csv")))
-    print(f"{cat}: {count} files")
+# Copy to output
+for p in selected:
+    dest = out_root / p.name
+    shutil.copy(p, dest)
+
+print(f"Copied {len(selected)} files into {out_root}")
