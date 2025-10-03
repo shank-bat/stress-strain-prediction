@@ -1,0 +1,20 @@
+import pandas as pd
+
+# Load data
+df = pd.read_csv("/home/shu/projects/stress-strain-prediction/Keypoints/Databases/al_data.csv")
+
+# Drop useless index column if present
+if "Unnamed: 0" in df.columns:
+    df = df.drop(columns=["Unnamed: 0"])
+
+# Define targets
+targets = ["Elongation (%)", "Tensile Strength (MPa)", "Yield Strength (MPa)"]
+
+# Drop rows with missing values in targets
+df_clean = df.dropna(subset=targets)
+
+print("Original shape:", df.shape)
+print("Cleaned shape:", df_clean.shape)
+
+# Save cleaned dataset if needed
+df_clean.to_csv("/home/shu/projects/stress-strain-prediction/Keypoints/Databases/al_data_cleaned.csv", index=False)
