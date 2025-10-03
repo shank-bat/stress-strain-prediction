@@ -6,6 +6,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.metrics import r2_score, mean_absolute_error
 from xgboost import XGBRegressor
 from sklearn.multioutput import MultiOutputRegressor
+import matplotlib.pyplot as plt
 
 # -----------------------------
 # Load and split
@@ -59,5 +60,20 @@ mae_scores = mean_absolute_error(y_test, y_pred, multioutput="raw_values")
 print("R² scores:", r2_scores)
 print("MAE scores:", mae_scores)
 
-import joblib
-joblib.dump(model, "aluminium_xgb.pkl")
+# -----------------------------
+# Graph output (parity plots)
+# -----------------------------
+targets = ["Elongation (%)", "Tensile Strength (MPa)", "Yield Strength (MPa)"]
+
+fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+for i, target in enumerate(targets):
+    axes[i].scatter(y_test[target], y_pred[:, i], alpha=0.7, edgecolors="k")
+    axes[i].plot([y_test[target].min(), y_test[target].max()],
+                 [y_test[target].min(), y_test[target].max()],
+                 "r--", lw=2)
+    axes[i].set_xlabel(f"Actual {target}")
+    axes[i].set_ylabel(f"Predicted {target}")
+    axes[i].set_title(f"Parity Plot: {target}")
+
+plt.tight_layout()
+plt.show()
