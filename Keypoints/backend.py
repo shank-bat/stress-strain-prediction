@@ -26,7 +26,7 @@ from keras import layers
 # -----------------------------
 # Paths to datasets (portable)
 # -----------------------------
-BASE_DIR = pathlib.Path(__file__).resolve().parents[1]
+BASE_DIR = pathlib.Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "Databases"  # adjust if your CSVs live elsewhere
 
 STEEL_PATH = DATA_DIR / "steel_strength_cleaned.csv"
