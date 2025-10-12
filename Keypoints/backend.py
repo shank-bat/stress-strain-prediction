@@ -98,6 +98,10 @@ def build_xgb(categorical, numeric):
 
 
 def build_nn(X, y, categorical, numeric):
+    # ensure categorical columns are strings
+    if categorical:
+        X[categorical] = X[categorical].astype(str)
+
     preprocessor = ColumnTransformer([
         ("num", StandardScaler(), numeric),
         ("cat", OneHotEncoder(handle_unknown="ignore"), categorical),
@@ -149,6 +153,11 @@ def predict(req: PredictRequest):
         if material == "aluminium" and "Processing" not in user_row.columns:
             user_row["Processing"] = "No Processing"
 
+        # ensure categorical data are strings before any preprocessing
+        if categorical:
+            X[categorical] = X[categorical].astype(str)
+            user_row[categorical] = user_row[categorical].astype(str)
+
         # Select model
         if model_choice == "rf":
             model = build_rf(categorical, numeric)
@@ -185,6 +194,9 @@ def predict(req: PredictRequest):
                 "Elongation": float(y_pred_user[0][0]),
             }
 
+        print(f"\n✅ Training complete | Material: {material} | Model: {model_choice} | Time: {round(time() - start, 2)}s")
+        print("Predicted values:", result)
+
         return {
             "predictions": result,
             "meta": {
@@ -200,4 +212,3 @@ def predict(req: PredictRequest):
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
-

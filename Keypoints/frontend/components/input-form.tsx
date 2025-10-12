@@ -204,8 +204,8 @@ export function InputForm({ material, model, onPredict, onReset }: InputFormProp
                 <Input
                   id={element}
                   type="number"
-                  step="0.001"
-                  placeholder="0.000"
+                  step="0.0001"
+                  placeholder="0.0000"
                   className="input-glow"
                   onChange={(e) => handleInputChange(element, e.target.value)}
                 />
