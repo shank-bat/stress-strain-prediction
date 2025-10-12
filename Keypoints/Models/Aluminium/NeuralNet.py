@@ -2,20 +2,25 @@ import os
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
 import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.metrics import r2_score, mean_absolute_error
 from tensorflow import keras
 from keras import layers
-import matplotlib.pyplot as plt
+import pathlib
+
+
+BASE_DIR = pathlib.Path(__file__).resolve().parents[1]          # .../Keypoints/Models
+DATA_PATH = BASE_DIR.parent / "Databases" / "al_data_cleaned.csv"  # go up one (Keypoints/) then into Databases/
+                  
+
+df = pd.read_csv(DATA_PATH)
 
 # -----------------------------
-# Load and prepare dataset
-# -----------------------------
-df = pd.read_csv("/home/shu/projects/stress-strain-prediction/Keypoints/Databases/al_data_cleaned.csv")
-
 # Features (composition + processing)
+# -----------------------------
 X = df.drop(columns=["Elongation (%)", "Tensile Strength (MPa)", "Yield Strength (MPa)", "class"])
 y = df[["Elongation (%)", "Tensile Strength (MPa)", "Yield Strength (MPa)"]]
 
@@ -90,4 +95,3 @@ for i, target in enumerate(targets):
 
 plt.tight_layout()
 plt.show()
-

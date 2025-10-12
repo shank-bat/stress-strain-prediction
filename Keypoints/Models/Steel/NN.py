@@ -8,10 +8,11 @@ from tensorflow import keras
 from keras import layers
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
+import pathlib
 
-
-# Load data
-df = pd.read_csv("/home/shu/projects/stress-strain-prediction/Keypoints/Databases/steel_strength_cleaned.csv")
+BASE_DIR = pathlib.Path(__file__).resolve().parents[1]          # .../Keypoints/Models
+DATA_PATH = BASE_DIR.parent / "Databases" / "steel_strength_cleaned.csv"  # go up one (Keypoints/) then into Databases/
+df = pd.read_csv(DATA_PATH)
 
 X = df.drop(columns=["yield strength", "tensile strength", "elongation"])
 y = df[["yield strength", "tensile strength", "elongation"]]

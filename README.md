@@ -27,3 +27,4 @@ See `docs/figures/` for plots.
 - Increase PCA components (20–25).  
 - Ensemble multiple seeds.  
 - Add richer input features if available (composition, microstructure).
+Project Overview

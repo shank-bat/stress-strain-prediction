@@ -7,11 +7,11 @@ from sklearn.metrics import r2_score, mean_absolute_error
 from xgboost import XGBRegressor
 from sklearn.multioutput import MultiOutputRegressor
 import matplotlib.pyplot as plt
+import pathlib
 
-# -----------------------------
-# Load and split
-# -----------------------------
-df = pd.read_csv("/home/shu/projects/stress-strain-prediction/Keypoints/Databases/al_data_cleaned.csv")
+BASE_DIR = pathlib.Path(__file__).resolve().parents[1]          # .../Keypoints/Models
+DATA_PATH = BASE_DIR.parent / "Databases" / "al_data_cleaned.csv"  # go up one (Keypoints/) then into Databases/
+df = pd.read_csv(DATA_PATH)
 
 X = df.drop(columns=["Elongation (%)", "Tensile Strength (MPa)", "Yield Strength (MPa)", "class"])
 y = df[["Elongation (%)", "Tensile Strength (MPa)", "Yield Strength (MPa)"]]

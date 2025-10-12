@@ -1,8 +1,9 @@
 import pandas as pd
+import pathlib
 
-# Load data
-df = pd.read_csv("/home/shu/projects/stress-strain-prediction/Keypoints/Databases/al_data.csv")
-
+BASE_DIR = pathlib.Path(__file__).resolve().parents[1]          # .../Keypoints/Models
+DATA_PATH = BASE_DIR.parent / "Databases" / "al_data.csv"  # go up one (Keypoints/) then into Databases/
+df = pd.read_csv(DATA_PATH)
 # Drop useless index column if present
 if "Unnamed: 0" in df.columns:
     df = df.drop(columns=["Unnamed: 0"])

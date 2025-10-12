@@ -8,6 +8,7 @@ from typing import Dict, Any
 import pandas as pd
 import numpy as np
 from time import time
+import pathlib
 
 # ML imports
 from sklearn.model_selection import train_test_split
@@ -23,10 +24,13 @@ from keras import layers
 
 
 # -----------------------------
-# Paths to datasets
+# Paths to datasets (portable)
 # -----------------------------
-STEEL_PATH = "/home/shu/projects/stress-strain-prediction/Keypoints/Databases/steel_strength_cleaned.csv"
-AL_PATH = "/home/shu/projects/stress-strain-prediction/Keypoints/Databases/al_data_cleaned.csv"
+BASE_DIR = pathlib.Path(__file__).resolve().parent
+DATA_DIR = BASE_DIR / "Databases"  # adjust if your CSVs live elsewhere
+
+STEEL_PATH = DATA_DIR / "steel_strength_cleaned.csv"
+AL_PATH = DATA_DIR / "al_data_cleaned.csv"
 
 app = FastAPI(title="Stress Prediction Tool API")
 
