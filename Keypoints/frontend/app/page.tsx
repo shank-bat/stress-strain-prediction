@@ -28,25 +28,34 @@ export default function Home() {
   }
 
   const handlePredict = async (formData: Record<string, any>) => {
-    try {
-      const response = await fetch("/api/predict", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          material,
-          model,
-          ...formData,
-        }),
-      })
+  try {
+    const response = await fetch("/api/predict", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        material,  // "steel" | "aluminium"
+        model,     // "neural-network" | "random-forest" | "xgboost"
+        data: formData,
+      }),
+    })
 
-      const data = await response.json()
-      setResults(data)
-    } catch (error) {
-      console.error("[v0] Prediction error:", error)
+    const data = await response.json()
+    if (response.ok) {
+      const preds = data.predictions
+      setResults({
+        yieldStrength: preds["Yield Strength"],
+        tensileStrength: preds["Tensile Strength"],
+        elongation: preds["Elongation"],
+      })
+    } else {
+      alert(data.error || "Prediction failed.")
     }
+  } catch (err) {
+    console.error("Prediction error:", err)
   }
+}
+
+
 
   const handleReset = () => {
     setStep("material")

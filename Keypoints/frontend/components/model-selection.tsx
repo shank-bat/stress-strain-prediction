@@ -1,6 +1,6 @@
 "use client"
 
-import { Brain, TreeDeciduous, Zap } from "lucide-react"
+import { Brain, GitBranch, Zap } from "lucide-react"
 
 interface ModelSelectionProps {
   onSelect: (model: "neural-network" | "random-forest" | "xgboost") => void
@@ -20,7 +20,7 @@ export function ModelSelection({ onSelect }: ModelSelectionProps) {
           className="group relative p-6 bg-card border-2 border-border rounded-xl hover:border-primary transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 hover:scale-105"
         >
           <div className="flex flex-col items-center gap-4">
-            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors animate-pulse-glow">
+            <div className="w-16 h-16 rounded-full bg-primary/10 ring-1 ring-primary/25 shadow-lg shadow-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors animate-pulse-glow">
               <Brain className="w-8 h-8 text-primary" />
             </div>
             <h3 className="text-xl font-bold">Neural Network</h3>
@@ -31,18 +31,18 @@ export function ModelSelection({ onSelect }: ModelSelectionProps) {
 
         <button
           onClick={() => onSelect("random-forest")}
-          className="group relative p-6 bg-card border-2 border-border rounded-xl hover:border-secondary transition-all duration-300 hover:shadow-xl hover:shadow-secondary/20 hover:scale-105"
+          className="group relative p-6 bg-card border-2 border-border rounded-xl hover:border-primary transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 hover:scale-105"
         >
           <div className="flex flex-col items-center gap-4">
-            <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center group-hover:bg-secondary/20 transition-colors animate-pulse-glow">
-              <TreeDeciduous className="w-8 h-8 text-secondary" />
+            <div className="w-16 h-16 rounded-full bg-primary/10 ring-1 ring-primary/25 shadow-lg shadow-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors animate-pulse-glow">
+              <GitBranch className="w-8 h-8 text-primary" />
             </div>
             <h3 className="text-xl font-bold">Random Forest</h3>
             <p className="text-muted-foreground text-center text-sm">
-              Ensemble learning with decision tree classifiers
+              Ensemble of branched learners for robust predictions
             </p>
           </div>
-          <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-secondary/0 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/0 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
         </button>
 
         <button
@@ -50,7 +50,7 @@ export function ModelSelection({ onSelect }: ModelSelectionProps) {
           className="group relative p-6 bg-card border-2 border-border rounded-xl hover:border-primary transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 hover:scale-105"
         >
           <div className="flex flex-col items-center gap-4">
-            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors animate-pulse-glow">
+            <div className="w-16 h-16 rounded-full bg-primary/10 ring-1 ring-primary/25 shadow-lg shadow-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors animate-pulse-glow">
               <Zap className="w-8 h-8 text-primary" />
             </div>
             <h3 className="text-xl font-bold">XGBoost</h3>

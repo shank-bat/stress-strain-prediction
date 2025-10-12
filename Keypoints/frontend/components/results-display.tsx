@@ -73,7 +73,7 @@ export function ResultsDisplay({ results }: ResultsDisplayProps) {
               <h4 className="text-sm font-medium text-muted-foreground mb-2">{card.title}</h4>
 
               <div className="flex items-baseline gap-2 mb-3">
-                <span className="text-4xl font-bold">{card.value}</span>
+                <span className="text-4xl font-bold">{card.value?.toFixed(2)}</span>
                 <span className="text-xl text-muted-foreground">{card.unit}</span>
               </div>
 
