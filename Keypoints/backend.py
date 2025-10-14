@@ -49,9 +49,12 @@ class PredictRequest(BaseModel):
 def get_data(material):
     if material == "steel":
         df = pd.read_csv(STEEL_PATH)
+        # Drop formula column if it exists
+        df = df.drop(columns=["formula"], errors="ignore")
         X = df.drop(columns=["yield strength", "tensile strength", "elongation"])
         y = df[["yield strength", "tensile strength", "elongation"]]
-        categorical, numeric = [], list(X.columns)  # composition only
+        categorical, numeric = [], list(X.columns)
+
     elif material == "aluminium":
         df = pd.read_csv(AL_PATH)
         X = df.drop(columns=["Elongation (%)", "Tensile Strength (MPa)", "Yield Strength (MPa)", "class"], errors="ignore")
@@ -145,6 +148,9 @@ def predict(req: PredictRequest):
     material = req.material.lower()
     model_choice = req.model.lower()
     user_data = req.data
+    print("\n--- Incoming data from frontend ---")
+    print(user_data)
+    print("----------------------------------\n")
 
     start = time()
 

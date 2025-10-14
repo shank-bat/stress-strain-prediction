@@ -44,7 +44,7 @@ const aluminiumElements = [
   "Zr",
 ]
 
-const steelElements = ["c", "mn", "si", "cr", "ni", "mo", "v", "n", "nb", "co", "w", "al", "ti"]
+const steelElements = ["fe","c", "mn", "si", "cr", "ni", "mo", "v", "n", "nb", "co", "w", "al", "ti"]
 
 const commonAluminium = ["Al", "Mg", "Si", "Cu", "Zn", "Mn"]
 const commonSteel = ["c", "mn", "si", "cr", "ni", "mo"]
