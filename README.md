@@ -40,8 +40,8 @@ All models perform **multi-output regression**, predicting:
 - Tensile Strength (MPa)  
 - Elongation (%)
 
-```### Directory Structure
-
+### Directory Structure
+```
 Keypoints/
 ├── Models/
 │ ├── NeuralNet.py # Neural network implementation
