@@ -40,17 +40,7 @@ All models perform **multi-output regression**, predicting:
 - Tensile Strength (MPa)  
 - Elongation (%)
 
-### Directory Structure
-
-Keypoints/
- ├─ Models/
- │   ├─ NeuralNet.py        # Neural network implementation
- │   ├─ XGBoost.py          # XGBoost regression
- │   ├─ RandomForest.py     # Random forest regression
- ├─ Databases/
- │   ├─ steel_strength_cleaned.csv
- │   └─ al_data_cleaned.csv
- └─ backend.py              # FastAPI backend for the web app
+<pre markdown> ```markdown ### Directory Structure Keypoints/ ├─ Models/ │ ├─ NeuralNet.py # Neural network implementation │ ├─ XGBoost.py # XGBoost regression │ ├─ RandomForest.py # Random forest regression ├─ Databases/ │ ├─ steel_strength_cleaned.csv │ └─ al_data_cleaned.csv └─ backend.py # FastAPI backend for the web app ``` </pre>
 
 
 ### Running the Models
